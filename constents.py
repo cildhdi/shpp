@@ -1,7 +1,4 @@
-#ui files
-uiInfo = "uis/info.ui"
-
-#defalut constents
-dftTender = "1111"
+# defalut constents
+dftTender = "11111111"
 dftPswd = "1111"
-dftId = "111111111111111111"
+dftUrl = "http://test.alltobid.com/moni/gerenbid.html"
