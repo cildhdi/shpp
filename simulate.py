@@ -3,9 +3,27 @@ from PyQt5 import Qt, QtGui, QtCore, QtWidgets, uic
 import win32api
 import win32gui
 import win32con
+import win32clipboard
 import sip
 import constents
 from uis.Ui_Simulate import Ui_MainWindow
+
+
+def click(x, y):
+    win32api.SetCursorPos([x, y])
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN |
+                         win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+
+
+def sendText(text, x, y):
+    win32clipboard.OpenClipboard()
+    win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, text)
+    click(x, y)
+    win32api.keybd_event(win32con.VK_CONTROL, 0, 0, 0)
+    win32api.keybd_event(86, 0, 0, 0)
+    win32api.keybd_event(86, 0, win32con.KEYEVENTF_KEYUP, 0)
+    win32api.keybd_event(win32con.VK_CONTROL, 0, win32con.KEYEVENTF_KEYUP, 0)
+    win32clipboard.CloseClipboard()
 
 
 class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -24,21 +42,9 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
         self.axWidget.setFixedHeight(700)
 
         self.btnLogin.clicked.connect(self.login)
-        self.webHwnd = win32gui.FindWindowEx(
-            int(self.winId()), 0, "Internet Explorer_Server", "")
 
     def login(self):
-        point = 760 + (500 << 16)
-        win32api.SendMessage(self.webHwnd, win32con.WM_LBUTTONDOWN, 0, point)
-        win32api.SendMessage(self.webHwnd, win32con.WM_LBUTTONUP, 0, point)
-
-# point = QtCore.QPoint(760, 500)
-# mousePress = QtGui.QMouseEvent(QtCore.QEvent.Type.MouseButtonPress, point, QtCore.Qt.MouseButton.LeftButton,
-#                                QtCore.Qt.MouseButton.LeftButton, QtCore.Qt.KeyboardModifier.NoModifier)
-# mouseRelease = QtGui.QMouseEvent(QtCore.QEvent.Type.MouseButtonRelease, point, QtCore.Qt.MouseButton.LeftButton,
-#                                  QtCore.Qt.MouseButton.LeftButton, QtCore.Qt.KeyboardModifier.NoModifier)
-# QtWidgets.QWidget.setFocus(self.axWidget)
-# print(QtWidgets.QApplication.sendEvent(
-#     self.axWidget, mousePress))
-# print(QtWidgets.QApplication.sendEvent(
-#     self.axWidget, mouseRelease))
+        click(self.x() + 760, self.y() + 540)
+        click(self.x() + 760, self.y() + 540)
+        sendText(self.tender, self.x() + 600, self.y() + 250)
+        sendText(self.pswd, self.x() + 600, self.y() + 300)
