@@ -4,26 +4,11 @@ import win32api
 import win32gui
 import win32con
 import win32clipboard
+import time
+import threading
 import sip
 import constents
 from uis.Ui_Simulate import Ui_MainWindow
-
-
-def click(x, y):
-    win32api.SetCursorPos([x, y])
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN |
-                         win32con.MOUSEEVENTF_LEFTUP, 0, 0)
-
-
-def sendText(text, x, y):
-    win32clipboard.OpenClipboard()
-    win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, text)
-    click(x, y)
-    win32api.keybd_event(win32con.VK_CONTROL, 0, 0, 0)
-    win32api.keybd_event(86, 0, 0, 0)
-    win32api.keybd_event(86, 0, win32con.KEYEVENTF_KEYUP, 0)
-    win32api.keybd_event(win32con.VK_CONTROL, 0, win32con.KEYEVENTF_KEYUP, 0)
-    win32clipboard.CloseClipboard()
 
 
 class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -43,8 +28,29 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.btnLogin.clicked.connect(self.login)
 
+    def click(self, x, y):
+        win32api.SetCursorPos([self.x() + x, self.y() + y])
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN |
+                             win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+
+    def sendText(self, text, x, y):
+        win32clipboard.OpenClipboard()
+        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, text)
+        win32clipboard.CloseClipboard()
+        self.click(x, y)
+        win32api.keybd_event(win32con.VK_CONTROL, 0, 0, 0)
+        win32api.keybd_event(86, 0, 0, 0)
+        win32api.keybd_event(86, 0, win32con.KEYEVENTF_KEYUP, 0)
+        win32api.keybd_event(win32con.VK_CONTROL, 0,
+                             win32con.KEYEVENTF_KEYUP, 0)
+
     def login(self):
-        click(self.x() + 760, self.y() + 540)
-        click(self.x() + 760, self.y() + 540)
-        sendText(self.tender, self.x() + 600, self.y() + 250)
-        sendText(self.pswd, self.x() + 600, self.y() + 300)
+        t = threading.Thread(target=self.loginThread, name="loginThread")
+        t.start()
+
+    def loginThread(self):
+        self.click(760, 540)
+        self.click(760, 540)
+        self.sendText(self.tender, 600, 250)
+        time.sleep(0.5)
+        self.sendText(self.pswd, 600, 300)
