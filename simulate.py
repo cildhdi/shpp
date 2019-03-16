@@ -19,6 +19,9 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pswd = pswd
         self.setupUi(self)
         self.setFixedSize(900, 800)
+        self.setWindowFlags(self.windowFlags() |
+                            QtCore.Qt.WindowType.WindowStaysOnTopHint)
+
         self.axWidget.setControl("{8856F961-340A-11D0-A96B-00C04FD705A2}")
         self.axWidget.setProperty("DisplayAlerts", False)
         self.axWidget.setProperty("DisplayScrollBars", False)
@@ -45,6 +48,7 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
                              win32con.KEYEVENTF_KEYUP, 0)
 
     def login(self):
+        win32gui.SetFocus(int(self.winId()))
         t = threading.Thread(target=self.loginThread, name="loginThread")
         t.start()
 
