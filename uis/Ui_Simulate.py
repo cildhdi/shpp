@@ -22,9 +22,18 @@ class Ui_MainWindow(object):
         self.axWidget = QAxContainer.QAxWidget(self.centralwidget)
         self.axWidget.setProperty("geometry", QtCore.QRect(0, 0, 900, 700))
         self.axWidget.setObjectName("axWidget")
-        self.btnLogin = QtWidgets.QPushButton(self.centralwidget)
-        self.btnLogin.setGeometry(QtCore.QRect(20, 730, 93, 28))
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(20, 730, 301, 31))
+        self.widget.setObjectName("widget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.btnLogin = QtWidgets.QPushButton(self.widget)
         self.btnLogin.setObjectName("btnLogin")
+        self.horizontalLayout.addWidget(self.btnLogin)
+        self.btnVerifi = QtWidgets.QPushButton(self.widget)
+        self.btnVerifi.setObjectName("btnVerifi")
+        self.horizontalLayout.addWidget(self.btnVerifi)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -37,5 +46,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "模拟"))
         self.btnLogin.setText(_translate("MainWindow", "登录"))
+        self.btnVerifi.setText(_translate("MainWindow", "验证"))
 
 from PyQt5 import QAxContainer

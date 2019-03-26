@@ -30,18 +30,31 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnLogin">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>730</y>
-      <width>93</width>
-      <height>28</height>
+      <width>301</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="text">
-     <string>登录</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btnLogin">
+       <property name="text">
+        <string>登录</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnVerifi">
+       <property name="text">
+        <string>验证</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
