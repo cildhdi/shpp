@@ -77,7 +77,7 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
         win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, text)
         win32clipboard.CloseClipboard()
 
-        while(len(text) == 0):
+        while (len(text) == 0):
             win32api.SetCursorPos([self.x() + 800, self.y() + 370])
             win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, 0, 0)
             win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN |
@@ -103,5 +103,4 @@ class SimulateWnd(QtWidgets.QMainWindow, Ui_MainWindow):
         x, y = self.x(), self.y()
         img = ImageGrab.grab((x + 502, y + 416, x + 613, y + 447))
         img.save(constents.imgPath)
-
-        print(recognize.recognize())
+        self.sendText(recognize.recognize(description=text), 750, 430)
